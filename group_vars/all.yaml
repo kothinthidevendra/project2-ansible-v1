@@ -6,3 +6,4 @@ ansible_password: DevOps321
 mongodb_host: mongodb.joindevops.store
 catalogue_host: catalogue.joindevops.store
 user_host: user.joindevops.store
+redis_host: redis.joindevops.store
