@@ -7,9 +7,7 @@
 
   - name: installation of nodejs24 server
     package:
-      name: 
-      - nodejs
-      - mongodb-mongosh
+      name: nodejs
       state: present
 
   - name: creation of system user for application
@@ -61,6 +59,11 @@
     copy:
       src: mongo.repo
       dest: /etc/yum.repos.d/mongo.repo
+
+  - name: install mongodb client
+    dnf:
+      name: mongodb-mongosh
+      state: present
 
   - name: daemon reload
     systemd_service:
