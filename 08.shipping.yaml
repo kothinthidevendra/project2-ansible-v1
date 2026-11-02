@@ -73,7 +73,7 @@
     when: cities_count.rc != 0 or cities_count.stdout | int == 0
 
   - name: create app user
-    shell: mysql -h {{ mysql_host }} -u root -p{{ mysql_root_password }} < /app/db/app-user.sql
+    shell: mysql -h "{{ mysql_host }}" -u root -p{{ mysql_root_password }} < /app/db/app-user.sql
 
   - name: creation of systemd service
     target:
