@@ -1,3 +1,4 @@
+---
 - name: configuration of catalogue server
   hosts: catalogue
   become: yes
