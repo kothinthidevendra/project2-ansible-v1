@@ -12,6 +12,12 @@
       name: rabbitmq-server
       state: present
 
+  - name: enabling and starting rabbitmq
+    service:
+      name: rabbitmq-server
+      state: started
+      enabled: yes
+
   - name: adding roboshop user in rabbitmq
     community.rabbitmq.rabbitmq_user:
       user: roboshop
