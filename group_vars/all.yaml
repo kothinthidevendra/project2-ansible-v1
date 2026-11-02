@@ -11,3 +11,4 @@ cart_host: cart.joindevops.store
 shipping_host: shipping.joindevops.store
 mysql_host: mysql.joindevops.store
 
+mysql_root_password: RoboShop@1
