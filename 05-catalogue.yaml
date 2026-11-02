@@ -47,7 +47,6 @@
 
   - name: installation of dependencies
     community.general.npm:
-      command: npm
       path: /app
 
   - name: copy the systemd catalogue.service
