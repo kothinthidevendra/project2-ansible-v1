@@ -4,12 +4,18 @@ ansible_user: ec2-user
 ansible_password: DevOps321
 
 mongodb_host: mongodb.joindevops.store
+redis_host: redis.joindevops.store
+mysql_host: mysql.joindevops.store
+rabbitmq_host: rabbitmq.joindevops.store
 catalogue_host: catalogue.joindevops.store
 user_host: user.joindevops.store
-redis_host: redis.joindevops.store
 cart_host: cart.joindevops.store
 shipping_host: shipping.joindevops.store
-mysql_host: mysql.joindevops.store
 payment_host: payment.joindevops.store
 
+
 mysql_root_password: RoboShop@1
+shipping_db_user: shipping
+shipping_db_password: RoboShop@1
+rabbitmq_user: roboshop
+rabbitmq_password: roboshop123
