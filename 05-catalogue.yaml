@@ -67,4 +67,10 @@
       state: started
       enabled: yes
 
-  
+  - name: check master data is loaded or not
+    command: mongosh --host "{{ mongodb_host }}" --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()'
+    register: product_count
+
+  - name: print the product_count 
+    debug:
+      msg: "{{ product_count }}"
