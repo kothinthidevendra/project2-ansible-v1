@@ -1,0 +1,70 @@
+- name: configuration of catalogue server
+  hosts: catalogue
+  become: yes
+  tasks:
+  - name: enabling the nodejs24 module
+    command: dnf module enable nodejs:24 -y
+
+  - name: installation of nodejs24 server
+    package:
+      name: 
+      - nodejs
+      - mongodb-mongosh
+      state: present
+
+  - name: creation of system user for application
+    user:
+      name: roboshop
+      create_home: false
+      home: /app
+      system: true
+      shell: /sbin/nologin
+      comment: "roboshop system user"
+
+  - name: removing the app folder if exists
+    file:
+      path: /app
+      state: absent
+
+  - name: remvoing zip file if exists
+    file:
+      path: /tmp/catalogue.zip
+      state: absent
+
+  - name: creation of app folder
+    file:
+      path: /app
+      state: directory
+
+  - name: downloading the code file
+    get_url:
+      url: https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip
+      dest: /tmp/catalogue.zip
+
+  - name: extracting the zip file
+    unarchive:
+      src: /tmp/catalogue.zip
+      dest: /app
+      remote.src: yes
+
+  - name: installation of dependencies
+    community.general.npm:
+      command: npm
+      path: /app
+
+  - name: copy the systemd catalogue.service
+    template:
+      src: catalogue.service
+      dest: /etc/systemd/system/catalogue.service
+
+  - name: daemon-reload
+      systemd.service:
+        daemon-reload: yes
+
+  - name: enabling and starting the service
+    service:
+      name: catalogue
+      state: started
+      enabled: yes
+
+  
