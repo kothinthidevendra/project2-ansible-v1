@@ -1,6 +1,7 @@
 # ansible-playbook -i inventory.ini roboshop.yaml -e "instances=['mysql']"
 
-ansible_user=ec2-user
-ansible_password=DevOps321
+ansible_user: ec2-user
+ansible_password: DevOps321
 
-mongodb_host=mongodb.joindevops.store
+mongodb_host: mongodb.joindevops.store
+catalogue_host: catalogue.joindevops.store
