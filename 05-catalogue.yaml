@@ -1,8 +1,7 @@
----
 - name: configuration of catalogue server
   hosts: catalogue
   become: yes
-  task:
+  tasks:
   - name: enabling the nodejs-24 module
     command: dnf module enable nodejs:24 -y
 
