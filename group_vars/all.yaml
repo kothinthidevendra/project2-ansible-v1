@@ -7,3 +7,5 @@ mongodb_host: mongodb.joindevops.store
 catalogue_host: catalogue.joindevops.store
 user_host: user.joindevops.store
 redis_host: redis.joindevops.store
+cart_host: cart.joindevops.store
+shipping_host: shipping.joindevops.store

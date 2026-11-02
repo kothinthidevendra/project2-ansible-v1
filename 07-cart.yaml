@@ -1,0 +1,67 @@
+- name: configuration of cart server
+  hosts: cart
+  become: yes
+  tasks:
+  - name: enabling nodejs24 module
+    command: dnf module enable nodejs:24 -y
+
+  - name: installation of nodejs 
+    package: 
+      name: nodejs
+      state: present
+
+  - name: creation of system user for application
+    user:
+      name: roboshop
+      create_home: false
+      home: /app
+      system: true
+      shell: /sbin/nologin
+      comment: "roboshop user"
+
+  - name: deletion of app folder if exists
+    file:
+      path: /app
+      state: absent
+
+  - name: deletion of code zip folder if exists
+    file:
+      path: /tmp/cart.zip
+      state: absent
+
+  - name: creation of app folder
+    file:
+      path: /app
+      state: directory
+
+  - name: Downloading the code
+    get_url: 
+      url: https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/cart-v4.zip
+      dest: /tmp/cart.zip
+
+  - name: extractoin of code
+    unarchive:
+      src: /tmp/cart.zip
+      dest: /app
+      remote_src: yes
+
+  - name: installation of dependencies
+    community.general.npm:
+      path: /app
+
+  - name: copy the systemd service file
+    template:
+      src: cart.service.j2
+      dest: /etc/systemd/system/cart.service
+
+  - name: daemon-reload
+    systemd_service:
+      daemon-reload: true
+
+  - name: enable and start the service
+    service:
+      name: cart
+      state: started
+      enabled: yes
+
+

@@ -1,0 +1,62 @@
+- name: configuration of shipping server
+  hosts: shipping
+  become: yes
+  tasks:
+  - name: enabling the maven3.9 module
+    command: dnf module enable maven:3.9 -y
+
+  - name: installation of maven3.9
+    package: 
+      name: 
+      - maven
+      - java-25-openjdk-devel
+      state: present
+
+  - name: creation of system user for application
+    user:
+      name: roboshop
+      create_home: false
+      home: /app
+      system: true
+      shell: /sbin/nologin
+      comment: "roboshop user"
+
+  - name: deletion of app folder if exists
+    file:
+      path: /app
+      state: absent
+
+  - name: deletion of code zip folder if exists
+    file:
+      path: /tmp/shipping.zip
+      state: absent
+
+  - name: creation of app folder
+    file:
+      path: /app
+      state: directory
+
+  - name: Downloading the code
+    get_url: 
+      url: https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/shipping-v4.zip
+      dest: /tmp/shipping.zip
+
+  - name: extractoin of code
+    unarchive:
+      src: /tmp/shipping.zip
+      dest: /app
+      remote_src: yes
+
+  - name: installation of dependencies
+    ansible.builtin.command:
+      cmd: mvn clean package
+      chdir: /app 
+  
+  - name: move shipping jar file
+    command: mv target/shipping.jar shipping.jar
+    args:
+      chdir: /app
+
+  
+
+
