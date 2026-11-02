@@ -57,9 +57,9 @@
       src: catalogue.service
       dest: /etc/systemd/system/catalogue.service
 
-  - name: daemon-reload
-      systemd.service:
-        daemon-reload: yes
+  - name: daemon reload
+    systemd.service:
+      daemon-reload: yes
 
   - name: enabling and starting the service
     service:
