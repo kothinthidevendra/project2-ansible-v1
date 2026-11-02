@@ -75,16 +75,16 @@
     debug:
       msg: "{{ product_count }}"
 
-  # - name: load the products
-  #   shell: mongosh --host "{{ mongodb_host }}" < /app/db/master-data.js
-  #   when: product_count.stdout | int == 0
+  - name: load the products
+    shell: mongosh --host "{{ mongodb_host }}" < /app/db/master-data.js
+    when: product_count.stdout | int == 0
 
-  # - name: daemon reload
-  #   systemd_service:
-  #     daemon_reload: true
+  - name: daemon-reload
+    systemd_service:
+      daemon-reload: true
 
-  # - name: start and enable catalogue
-  #   service:
-  #     name: catalogue
-  #     state: restarted
-  #     enabled: yes
+  - name: enable and start the service
+    service:
+      name: catalogue
+      state: restarted
+      enabled: yes
