@@ -57,6 +57,11 @@
       src: catalogue.service
       dest: /etc/systemd/system/catalogue.service
 
+  - name: copy mongo repo
+    copy:
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo
+
   - name: daemon reload
     systemd_service:
       daemon-reload: true
