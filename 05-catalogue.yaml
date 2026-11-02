@@ -1,11 +1,11 @@
 - name: configuration of catalogue server
   hosts: catalogue
   become: yes
-  tasks:
-  - name: enabling the nodejs24 module
+  task:
+  - name: enabling the nodejs-24 module
     command: dnf module enable nodejs:24 -y
 
-  - name: installation of nodejs24 server
+  - name: installation of nodejs 
     package:
       name: nodejs
       state: present
@@ -19,65 +19,66 @@
       shell: /sbin/nologin
       comment: "roboshop system user"
 
-  - name: removing the app folder if exists
+  - name: deletion of app folder if exists
     file:
       path: /app
       state: absent
 
-  - name: remvoing zip file if exists
+  - name: deletion of catalogue zip file
     file:
       path: /tmp/catalogue.zip
       state: absent
-
+  
   - name: creation of app folder
     file:
       path: /app
       state: directory
 
-  - name: downloading the code file
+  - name: downloading the code zip file
     get_url:
       url: https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip
       dest: /tmp/catalogue.zip
 
-  - name: extracting the zip file
+  - name: extraction of code folder
     unarchive:
       src: /tmp/catalogue.zip
       dest: /app
       remote_src: yes
-
+  
   - name: installation of dependencies
     community.general.npm:
       path: /app
 
-  - name: copy the systemd catalogue.service
+  - name: creation of systemd service for catalogue
     template:
-      src: catalogue.service
+      src: catalogue.service.j2
       dest: /etc/systemd/system/catalogue.service
-
-  - name: copy mongo repo
-    copy:
-      src: mongo.repo
-      dest: /etc/yum.repos.d/mongo.repo
-
-  - name: install mongodb client
-    dnf:
-      name: mongodb-mongosh
-      state: present
 
   - name: daemon reload
     systemd_service:
       daemon-reload: true
 
-  - name: enabling and starting the service
+  - name: enabling and starting the catalogue service
     service:
       name: catalogue
-      state: started
+      state: present
       enabled: yes
+
+  - name: copying the mongo repo 
+    copy:
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo
+
+  - name: installation of mongo client
+    package:
+      name: mongodb-mongosh
+      state: present
 
   - name: check master data is loaded or not
     command: mongosh --host "{{ mongodb_host }}" --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()'
     register: product_count
 
-  - name: print the product_count 
+  - name: print product count
     debug:
       msg: "{{ product_count }}"
+
