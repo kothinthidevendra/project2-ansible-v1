@@ -13,7 +13,7 @@
       state: present
 
   - name: adding roboshop user in rabbitmq
-    community.rabbitmq.rabiitmq_user:
+    community.rabbitmq.rabbitmq_user:
       user: roboshop
       password: "roboshop123"
       vhost: /
@@ -28,4 +28,3 @@
       state: restarted
       enabled: yes
 
-      
