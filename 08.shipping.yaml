@@ -76,7 +76,7 @@
     shell: mysql -h "{{ mysql_host }}" -u root -p{{ mysql_root_password }} < /app/db/app-user.sql
 
   - name: creation of systemd service
-    target:
+    template:
       src: shipping.service.j2
       dest: /etc/systemd/system/shipping.service
 
