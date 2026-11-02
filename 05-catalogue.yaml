@@ -58,8 +58,8 @@
       dest: /etc/systemd/system/catalogue.service
 
   - name: daemon reload
-    systemd.service:
-      daemon-reload: yes
+    systemd_service:
+      daemon-reload: true
 
   - name: enabling and starting the service
     service:
