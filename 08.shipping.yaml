@@ -48,8 +48,8 @@
       remote_src: yes
 
   - name: installation of dependencies
-    ansible.builtin.command:
-      cmd: mvn clean package
+    command: mvn clean package
+    args:
       chdir: /app 
   
   - name: move shipping jar file
