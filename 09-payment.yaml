@@ -62,5 +62,5 @@
   - name: start and enable payment
     service:
       name: payment
-      state: restarted
+      state: started
       enabled: yes
