@@ -1,8 +1,6 @@
 - name: configure catalogue server
   hosts: catalogue
   become: yes
-  vars:
-    mongodb_host: mongodb.joindevops.store
   tasks:
   - name: disable default nodejs
     command: dnf module disable nodejs -y
