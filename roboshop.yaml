@@ -1,10 +1,10 @@
 - name: create ec2 instances and r53 records
-  hosts: localhost
+  hosts: local
   connection: local
   vars:
     # ansible-playbook roboshop.yaml -e "instances=['mongodb', 'redis']"
     # ansible-playbook roboshop.yaml -e "action=delete"
-    instances: ["mongodb", "redis"]
+    instances: ["mongodb", "redis", "mysql", "rabbitmq", "catalogue", "user", "cart", "shipping", "payment", "frontend"]
     action: create
     domain_name: joindevops.store
     ami_id: ami-0055977a6e828a4f4
@@ -30,7 +30,7 @@
     amazon.aws.route53:
       state: present
       zone: "{{ domain_name }}"
-      record: "{{ item.item }}.{{ domain_name }}" # mongodb.joindevops.store
+      record: "{{ item.item }}.{{ domain_name }}" # mongodb.daws92s.store
       type: A
       ttl: 1
       value: "{{ item.instances[0].private_ip_address }}"
@@ -42,7 +42,7 @@
     amazon.aws.route53:
       state: present
       zone: "{{ domain_name }}"
-      record: "{{ domain_name }}" # joindevops.store points to frontend public IP
+      record: "{{ domain_name }}" # daws92s.store points to frontend public IP
       type: A
       ttl: 1
       value: "{{ item.instances[0].public_ip_address }}"
